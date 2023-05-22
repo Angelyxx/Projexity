@@ -1,6 +1,6 @@
-# projexity
+# Projexity
 
-A new Flutter project.
+Team Spirit's (5908) Project for Orbital
 
 ## Getting Started
 

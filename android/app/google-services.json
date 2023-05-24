@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "241030368248",
+    "project_id": "projexity-13eac",
+    "storage_bucket": "projexity-13eac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241030368248:android:e422ce940394b946dde40d",
+        "android_client_info": {
+          "package_name": "com.example.projexity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241030368248-vr8vnkn354ro09erifh450enrac3sclo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBby0aCirgrlgeogHG6Her5sKSqupWcyek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241030368248-c8ui1b758rs6a6gpr5uofjgauass63gc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "241030368248-mou8f7bje5n3jaiek5mialbms54cc2t8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projexity"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// This class is the implementation of our home page
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:projexity/pages/login_page.dart';
 import 'package:projexity/pages/auth_page.dart';
 
+/// This class is the implementation of our starting page
+
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
 
+  /// Constructor for the widget and UI for the start page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

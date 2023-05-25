@@ -7,6 +7,8 @@ import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
 import 'package:projexity/services/auth_service.dart';
 
+/// This class is the implementation of our login functionality
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -18,6 +20,10 @@ class _LoginPageState extends State<LoginPage> {
   //text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  /// Function for signing into the home page using firebase authentication
+  /// @param email email that user logs in with
+  /// @param password user's password
 
   Future signIn() async {
     //show loading circle
@@ -54,6 +60,8 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
+
+  /// Constructor for the widget and UI for the login page
 
   @override
   Widget build(BuildContext context) {

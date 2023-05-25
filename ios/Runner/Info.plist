@@ -16,6 +16,7 @@
 			</array>
 		</dict>
 	</array>
+
 	<!-- End of the Google Sign-in Section -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

@@ -1,67 +1,53 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projexity/components/login_button.dart';
-import 'package:projexity/components/square_tile.dart';
-import 'package:projexity/services/auth_service.dart';
+import 'package:projexity/components/sign_up_button.dart';
+import '../components/square_tile.dart';
+import '../services/auth_service.dart';
 
-import 'forgot_pw_page.dart';
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
 
-class LoginPage extends StatefulWidget {
-  final VoidCallback showRegisterPage;
-  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
+  const RegisterPage({Key? key, required this.showLoginPage}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  Color bckground = const Color.fromARGB(255, 223, 220, 220);
+  Color inputBox = const Color(0xFFA0A9B1);
   //text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
 
-  Future signIn() async {
-    //show loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
-    try {
-      //trying signing in
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found');
-      } else if (e.code == 'wrong-password') {
-        print('wrong password.');
-      }
-    }
-
-    //pop loading circle
-    Navigator.pop(context);
-  }
-
-  @override
+    @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmpasswordController.dispose();
     super.dispose();
+  }
+
+  Future signUp() async {
+    if (passwordConfirmed()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(), 
+        password: _passwordController.text.trim(),
+      );
+    }
+  }
+ 
+  bool passwordConfirmed() {
+    return _passwordController.text.trim() == _confirmpasswordController.text.trim();
   }
 
   @override
   Widget build(BuildContext context) {
-    Color bckground = const Color.fromARGB(255, 223, 220, 220);
-    Color inputBox = const Color(0xFFA0A9B1);
     return Scaffold(
         backgroundColor: bckground,
         body: SafeArea(
@@ -87,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                     const SizedBox(height: 5),
                     Text(
-                      'Welcome back and let\'s get to work!',
+                      'Register below with your details!',
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 18,
@@ -118,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 10),
 
-                    //password
+                    //Password textfield
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Container(
@@ -134,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Password',
+                              hintText: 'Password: Minimum 6 characters',
                               hintStyle: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -144,35 +130,35 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 10),
 
-                    //forgot password
+                    //confirm password textfield
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return ForgotPasswordPage();
-                                },
-                              ),
-                              );
-                            },
-                            child: Text(
-                              'Forgot Password?',
-                              style: TextStyle(color: Colors.grey[600]),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: inputBox,
+                          border: Border.all(color: inputBox),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: _confirmpasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Confirm Password',
+                              hintStyle: TextStyle(color: Colors.white),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
 
                     const SizedBox(height: 30),
 
-                    //Sign in Button
-                    LoginButton(
-                      onTap: signIn,
+                    //Sign Up Button
+                    SignUpButton(
+                      onTap: signUp,
                     ),
 
                     const SizedBox(height: 40),
@@ -211,12 +197,12 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Not a member?'),
+                        Text('I am a member!'),
                         const SizedBox(width: 4),
                         GestureDetector(
-                          onTap: widget.showRegisterPage,
+                          onTap: widget.showLoginPage,
                           child: Text(
-                            'Register now',
+                            'Login now',
                             style: TextStyle(
                                 color: Colors.blue, fontWeight: FontWeight.bold),
                           ),
@@ -226,6 +212,6 @@ class _LoginPageState extends State<LoginPage> {
                   ]),
             ),
           ),
-        ));
+        ));;
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projexity/pages/login_page.dart';
 import 'package:projexity/pages/start_page.dart';
+import 'alt_page.dart';
 import 'home_page.dart';
 
 class AuthPage extends StatelessWidget {
@@ -16,7 +17,7 @@ class AuthPage extends StatelessWidget {
             if (snapshot.hasData) {
               return HomePage(); //if the user exist, return home page
             } else {
-              return LoginPage();
+              return AltPage();
             }
           }),
     );

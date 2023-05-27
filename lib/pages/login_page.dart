@@ -6,8 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
 import 'package:projexity/services/auth_service.dart';
-
-import 'forgot_pw_page.dart';
+import 'package:projexity/pages/forgot_pw_page.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;

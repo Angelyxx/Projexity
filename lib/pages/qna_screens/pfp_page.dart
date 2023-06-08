@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class InterestPage extends StatelessWidget {
+class PfpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class InterestPage extends StatelessWidget {
                 const SizedBox(height: 45),
 
                 //question header
-                Text('What are your \n interests?',
+                Text('Upload your \n profile picture!',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.lato(
                         textStyle: TextStyle(
@@ -34,34 +34,24 @@ class InterestPage extends StatelessWidget {
                     ))),
                 const SizedBox(height: 35),
 
-                //logo
-                Image.asset(
-                  'lib/images/interest_onboard.png',
-                  height: 225,
-                ),
-
-                const SizedBox(height: 55),
-
-                //dob
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
+                Container(
+                    height: 360,
+                    width: 360,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(32),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(width: 3, color: Colors.white),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Interests (add at least 2)',
-                            hintStyle: TextStyle(color: Colors.blueGrey[600])),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {},
                       ),
-                    ),
-                  ),
-                ),
+                    )),
+
                 const SizedBox(height: 10),
               ],
             ),

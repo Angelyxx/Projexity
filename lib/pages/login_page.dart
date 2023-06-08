@@ -151,11 +151,13 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return ForgotPasswordPage();
-                                },
-                              ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ForgotPasswordPage();
+                                  },
+                                ),
                               );
                             },
                             child: Text(
@@ -217,7 +219,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             'Register now',
                             style: TextStyle(
-                                color: Colors.blue, fontWeight: FontWeight.bold),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],

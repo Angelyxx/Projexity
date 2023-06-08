@@ -16,7 +16,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Color inputBox = const Color(0xFFA0A9B1);
   Color originCol = const Color.fromRGBO(249, 200, 6, 1);
 
-  @override 
+  @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
@@ -25,50 +25,50 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Future passwordReset() async {
     try {
       await FirebaseAuth.instance
-        .sendPasswordResetEmail(email: _emailController.text.trim());
-         showDialog(
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+      showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             content: Text('A password reset link has been sent to your email!'),
           );
         },
-        );
+      );
     } on FirebaseAuthException catch (e) {
       print(e);
       showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.message.toString()),
-          );
-        });
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: originCol,
-        elevation: 0,
-      ),  
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Text(
-              'Enter your Email and we will send you a password reset link.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 19),
+        appBar: AppBar(
+          backgroundColor: originCol,
+          elevation: 0,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Text(
+                'Enter your Email and we will send you a password reset link.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 19),
               ),
-          ),
+            ),
 
-          SizedBox(height: 10),
+            SizedBox(height: 10),
 
-          //email textfield
-           Padding(
+            //email textfield
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -86,19 +86,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         hintStyle: TextStyle(color: Colors.grey[700])),
                   ),
                 ),
+              ),
             ),
-          ),
-          
-          SizedBox(height: 10),
 
+            SizedBox(height: 10),
 
-          MaterialButton(
-            onPressed: passwordReset,
-            child: Text('Reset Password'),
-            color: originCol,
-          ),
-        ],
-      )
-    );
+            MaterialButton(
+              onPressed: passwordReset,
+              child: Text('Reset Password'),
+              color: originCol,
+            ),
+          ],
+        ));
   }
 }

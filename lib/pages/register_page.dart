@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
 
-    @override
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -37,23 +37,24 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       if (passwordConfirmed()) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(), 
+          email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-      } 
+      }
     } on FirebaseAuthException catch (e) {
       showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text(e.message.toString()),
-          );
-        });
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
     }
   }
- 
+
   bool passwordConfirmed() {
-    return _passwordController.text.trim() == _confirmpasswordController.text.trim();
+    return _passwordController.text.trim() ==
+        _confirmpasswordController.text.trim();
   }
 
   @override
@@ -214,7 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             'Login now',
                             style: TextStyle(
-                                color: Colors.blue, fontWeight: FontWeight.bold),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -222,6 +224,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ]),
             ),
           ),
-        ));;
+        ));
   }
 }

@@ -8,6 +8,8 @@ import 'package:projexity/components/square_tile.dart';
 import 'package:projexity/services/auth_service.dart';
 import 'package:projexity/pages/forgot_pw_page.dart';
 
+import 'explore_page.dart';
+
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
   const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
@@ -21,17 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signIn() async {
-    //show loading circle
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-
+  Future signIn() async {    
+    
     try {
       //trying signing in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -45,9 +38,8 @@ class _LoginPageState extends State<LoginPage> {
         print('wrong password.');
       }
     }
-
     //pop loading circle
-    Navigator.pop(context);
+    //Navigator.pop(context);
   }
 
   @override
@@ -173,7 +165,22 @@ class _LoginPageState extends State<LoginPage> {
 
                     //Sign in Button
                     LoginButton(
-                      onTap: signIn,
+                      onTap: () async {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+                        await signIn();
+                        Navigator.pop(context); // Pop the loading indicator dialog
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ExplorePage()),
+                        );
+                      },
                     ),
 
                     const SizedBox(height: 40),

@@ -7,8 +7,7 @@ import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
 import 'package:projexity/services/auth_service.dart';
 import 'package:projexity/pages/forgot_pw_page.dart';
-
-import 'explore_page.dart';
+import 'package:projexity/pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -27,20 +26,44 @@ class _LoginPageState extends State<LoginPage> {
     
     try {
       //trying signing in
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found');
-      } else if (e.code == 'wrong-password') {
-        print('wrong password.');
-      }
+     
+     if (user != null) {
+      // User exists in the database, proceed to sign in
+      Navigator.pop(context); // Pop the loading indicator dialog
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // User does not exist in the database
+      print('No user found');
     }
-    //pop loading circle
-    //Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+    // Show the error message to the user
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Sign In Error'),
+          content: Text(e.message.toString()),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+}
 
   @override
   void dispose() {
@@ -164,6 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 30),
 
                     //Sign in Button
+                    /*
                     LoginButton(
                       onTap: () async {
                         showDialog(
@@ -182,7 +206,71 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                     ),
+                    */
+                    // Sign in Button
+                    LoginButton(
+                      onTap: () async {
+                        final email = _emailController.text.trim();
+                        final password = _passwordController.text.trim();
 
+                        if (email.isEmpty || password.isEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Missing Information'),
+                                content: Text('Please enter both email and password.'),
+                                actions: [
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context); // Close the dialog
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
+
+                          try {
+                            await signIn();
+                            Navigator.pop(context); // Pop the loading indicator dialog
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ExplorePage()),
+                            );
+                          } catch (error) {
+                            Navigator.pop(context); // Pop the loading indicator dialog
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Sign In Error'),
+                                  content: Text('An error occurred. Please try again later.'),
+                                  actions: [
+                                    TextButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context); // Close the dialog
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                      },
+                    ),
                     const SizedBox(height: 40),
 
                     //continue with

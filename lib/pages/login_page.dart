@@ -246,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pop(context); // Pop the loading indicator dialog
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ExplorePage()),
+                              MaterialPageRoute(builder: (context) => HomePage()),
                             );
                           } catch (error) {
                             Navigator.pop(context); // Pop the loading indicator dialog

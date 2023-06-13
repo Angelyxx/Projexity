@@ -5,9 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/components/sign_up_button.dart';
+import 'package:projexity/pages/onboarding_screen.dart';
 import '../components/square_tile.dart';
 import '../services/auth_service.dart';
-import 'explore_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -175,7 +175,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         signUp();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ExplorePage()),
+                          MaterialPageRoute(builder: (context) => OnBoardingScreen()),
                         );
                       },
                     ),

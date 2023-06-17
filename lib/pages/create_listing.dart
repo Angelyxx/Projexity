@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Listing extends StatelessWidget {
-  const Listing({super.key});
+class Listing extends StatefulWidget {
+  @override
+  _ListingState createState() => _ListingState();
+}
+
+class _ListingState extends State<Listing> {
+  // Define text field controllers for the input fields
+  TextEditingController _projectTitleController = TextEditingController();
+  TextEditingController _projectSubtitleController = TextEditingController();
+  TextEditingController _projectDescriptionController = TextEditingController();
+  TextEditingController _recommendedSkillsController = TextEditingController();
+  TextEditingController _numberOfMembersController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the text field controllers when the widget is disposed
+    _projectTitleController.dispose();
+    _projectSubtitleController.dispose();
+    _projectDescriptionController.dispose();
+    _recommendedSkillsController.dispose();
+    _numberOfMembersController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,39 +49,39 @@ class Listing extends StatelessWidget {
       ),
 
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildCategoryTitle('Project Banner'),
-              SizedBox(height: 10.0),
-              _buildRoundedContainer(),
-              SizedBox(height: 30.0),
-              _buildCategoryTitle('Project Title'),
-              SizedBox(height: 10.0),              
-              _buildRoundedContainer(),
-              SizedBox(height: 30.0),
-              _buildCategoryTitle('Project Subtitle'),
-              SizedBox(height: 10.0),
-              _buildRoundedContainer(),
-              SizedBox(height: 30.0),
-              _buildCategoryTitle('Project Description'),
-              SizedBox(height: 10.0),
-              _buildRoundedContainer(),
-              SizedBox(height: 30.0),
-              _buildCategoryTitle('Recommended Skills'),
-              SizedBox(height: 10.0),
-              _buildRoundedContainer(),
-              SizedBox(height: 30.0),
-              _buildCategoryTitle('Number of Members'),
-              SizedBox(height: 10.0),
-              _buildRoundedContainer(),
-            ],
+         body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildCategoryTitle('Project Banner'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(TextEditingController()), // Add text field controllers here
+                SizedBox(height: 30.0),
+                _buildCategoryTitle('Project Title'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(_projectTitleController), // Add text field controllers here
+                SizedBox(height: 30.0),
+                _buildCategoryTitle('Project Subtitle'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(_projectSubtitleController), // Add text field controllers here
+                SizedBox(height: 30.0),
+                _buildCategoryTitle('Project Description'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(_projectDescriptionController), // Add text field controllers here
+                SizedBox(height: 30.0),
+                _buildCategoryTitle('Recommended Skills'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(_recommendedSkillsController), // Add text field controllers here
+                SizedBox(height: 30.0),
+                _buildCategoryTitle('Number of Members'),
+                SizedBox(height: 10.0),
+                _buildRoundedContainer(_numberOfMembersController), // Add text field controllers here
+              ],
+            ),
           ),
         ),
-      ),
       
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -83,15 +106,16 @@ class Listing extends StatelessWidget {
     );
   }
 
-  Widget _buildRoundedContainer() {
-    return Container(
+  Widget _buildRoundedContainer(TextEditingController controller) {
+      return Container(
       height: 55.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         border: Border.all(color: Colors.grey),
       ),
       child: TextFormField(
-        decoration: InputDecoration(
+        controller: controller,
+        decoration: const InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.all(16.0),
           hintText: 'Enter details....',
@@ -121,6 +145,22 @@ class Listing extends StatelessWidget {
   }
 
   void _showProjectListedDialog(BuildContext context) {
+  // Get the values from the text fields
+    String projectTitle = _projectTitleController.text;
+    String projectSubtitle = _projectSubtitleController.text;
+    String projectDescription = _projectDescriptionController.text;
+    String recommendedSkills = _recommendedSkillsController.text;
+    String numberOfMembers = _numberOfMembersController.text;
+
+    // Store the data in Firestore
+    FirebaseFirestore.instance.collection('listings').add({
+      'projectTitle': projectTitle,
+      'projectSubtitle': projectSubtitle,
+      'projectDescription': projectDescription,
+      'recommendedSkills': recommendedSkills,
+      'numberOfMembers': numberOfMembers,
+    }).then((_) {
+    // Show the success dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -131,11 +171,37 @@ class Listing extends StatelessWidget {
               child: Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
+                // Clear the text field controllers
+                _projectTitleController.clear();
+                _projectSubtitleController.clear();
+                _projectDescriptionController.clear();
+                _recommendedSkillsController.clear();
+                _numberOfMembersController.clear();
               },
             ),
           ],
         );
       },
     );
+  }).catchError((error) {
+    // Show an error dialog if the listing couldn't be added
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to list the project.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 }

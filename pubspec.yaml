@@ -48,12 +48,6 @@ dependencies:
 
   #other dependencies
   equatable: ^2.0.5
-  cross_file:
-  bloc:
-  image_picker:
-  database_repository:
-  storage_repository:
-
 
 dev_dependencies:
   flutter_test:

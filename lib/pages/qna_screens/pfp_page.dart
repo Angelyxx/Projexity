@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:projexity/repositories/storage/storage_repository,.dart';
 
 class PfpPage extends StatelessWidget {
   @override
@@ -48,7 +50,21 @@ class PfpPage extends StatelessWidget {
                           Icons.add_circle,
                           color: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          ImagePicker _picker = ImagePicker();
+                          final XFile? _image = await _picker.pickImage(
+                              source: ImageSource.gallery);
+
+                          if (_image == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('No image was selected')));
+                          }
+
+                          if (_image != null) {
+                            print('Uploading ...');
+                            StorageRepository().uploadImage(_image);
+                          }
+                        },
                       ),
                     )),
 

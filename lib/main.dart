@@ -8,6 +8,7 @@ import 'firebase_options.dart';
 import 'package:projexity/pages/auth_page.dart';
 
 import 'pages/start_page.dart';
+import 'package:equatable/equatable.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
-    );
+        debugShowCheckedModeBanner: false,
+        home: StartPage() //OnBoardingScreen(),
+        );
   }
 }

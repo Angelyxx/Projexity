@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
+import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:projexity/services/auth_service.dart';
 import 'package:projexity/pages/forgot_pw_page.dart';
 
@@ -23,8 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signIn() async {    
-    
+  Future signIn() async {
     try {
       //trying signing in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -175,10 +175,13 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         );
                         await signIn();
-                        Navigator.pop(context); // Pop the loading indicator dialog
+                        Navigator.pop(
+                            context); // Pop the loading indicator dialog
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ExplorePage()),
+                          MaterialPageRoute(
+                              builder: (context) => OnBoardingScreen()),
+                          //MaterialPageRoute(builder: (context) => ExplorePage()),
                         );
                       },
                     ),

@@ -43,7 +43,17 @@ dependencies:
   google_sign_in: ^6.1.1
   firebase_core: ^2.13.0
   firebase_core_platform_interface: 4.8.0
+  firebase_storage: 11.2.2
+  cloud_firestore: ^4.8.0
+
+  #other dependencies
   equatable: ^2.0.5
+  cross_file:
+  bloc:
+  image_picker:
+  database_repository:
+  storage_repository:
+
 
 dev_dependencies:
   flutter_test:

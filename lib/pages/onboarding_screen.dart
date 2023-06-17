@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projexity/pages/explore_page.dart';
+//import 'package:projexity/pages/explore_page.dart';
 import 'package:projexity/pages/home_page.dart';
 import 'package:projexity/pages/qna_screens/dob_page.dart';
 import 'package:projexity/pages/qna_screens/interest_page.dart';
@@ -71,7 +71,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return ExplorePage(); //Go to explore page
+                                return HomePage(); //Go to explore page
                               }));
                             },
                             child: Text('done'))

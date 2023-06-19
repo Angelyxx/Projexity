@@ -21,9 +21,9 @@ class AuthPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomePage(); //if the user exist, return home page
+              return const HomePage(); //if the user exist, return home page
             } else {
-              return AltPage();
+              return const AltPage();
             }
           }),
     );

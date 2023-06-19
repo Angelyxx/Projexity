@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projexity/pages/view_listing.dart';
+import 'alt_page.dart';
 import 'create_listing.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,7 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
   List<DocumentSnapshot> listingsData = [];
-  
+
   @override
   void initState() {
     super.initState();
@@ -34,15 +33,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+    // Navigate to the start page or any other page you desire after sign-out
+    // You can use Navigator.pushReplacement to navigate to a new screen and replace the current screen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => AltPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(249, 200, 6, 1),
-        title: Text('Explore',
-        style: TextStyle(fontSize: 30.0),
+        title: Text(
+          'Explore',
+          style: TextStyle(fontSize: 30.0),
         ),
-
         actions: [
           IconButton(
             iconSize: 30.0,
@@ -55,11 +64,10 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Listing(),
-                  ),
+                ),
               );
             },
           ),
-
           IconButton(
             iconSize: 30.0,
             icon: Icon(Icons.search),
@@ -68,9 +76,17 @@ class _HomePageState extends State<HomePage> {
               // You can implement search functionality here
             },
           ),
+          IconButton(
+            iconSize: 30.0,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              // Handle the back button press
+              // Sign out the user and navigate to the start page or any other page
+              _signOut();
+            },
+          ),
         ],
       ),
-
       ///List view to scroll downwards
       body: ListView.builder(
         itemCount: listingsData.length,
@@ -99,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => ViewListing(listingId: listingId),
+                      builder: (context) => ViewListing(listingId: listingId),
                     ),
                   );
                 },

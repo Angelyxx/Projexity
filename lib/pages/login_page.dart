@@ -23,18 +23,62 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signIn() async {
-    try {
-      //trying signing in
-      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+  Future<void> signIn(BuildContext context) async {
+    /*
+    //show loading circle
+    showDialog(context: context,
+    builder: (context) {
+      return const Center(child: CircularProgressIndicator(),
       );
-     
-     if (user != null) {
+    },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text,
+      password: _passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        //show error to user
+        wrongEmailMessage();
+      } else if (e.code == 'wrong-password') {
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  void wrongEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Incorrect Email"),
+        );
+      },
+    );
+  }
+
+  void wrongPasswordMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Incorrect Password"),
+        );
+      },
+    );
+  }
+  */
+
+  try {
+    final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    if (user != null) {
       // User exists in the database, proceed to sign in
       Navigator.pop(context); // Pop the loading indicator dialog
-      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -43,14 +87,22 @@ class _LoginPageState extends State<LoginPage> {
       // User does not exist in the database
       print('No user found');
     }
-    } on FirebaseAuthException catch (e) {
-    // Show the error message to the user
+  } on FirebaseAuthException catch (e) {
+    // Handle specific authentication errors and display error messages
+    String errorMessage = 'An error occurred. Please try again later.';
+
+    if (e.code == 'invalid-email') {
+      errorMessage = 'Invalid email. Please enter a valid email address.';
+    } else if (e.code == 'wrong-password') {
+      errorMessage = 'Invalid password. Please enter a valid password.';
+    }
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Sign In Error'),
-          content: Text(e.message.toString()),
+          content: Text(errorMessage),
           actions: [
             TextButton(
               child: Text('OK'),
@@ -245,7 +297,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
 
                           try {
-                            await signIn();
+                            await signIn(context);
                             Navigator.pop(context); // Pop the loading indicator dialog
                             Navigator.push(
                               context,

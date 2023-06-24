@@ -7,12 +7,12 @@ abstract class OnboardingState extends Equatable {
   List<Object> get props => [];
 }
 
-class OnBoardingLoading extends OnboardingState {}
+class OnboardingLoading extends OnboardingState {}
 
-class OnBoardingLoaded extends OnboardingState {
+class OnboardingLoaded extends OnboardingState {
   final User user;
 
-  OnBoardingLoaded({required this.user});
+  OnboardingLoaded({required this.user});
 
   @override
   List<Object> get props => [user];

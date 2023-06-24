@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/pages/login_page.dart';
 import 'package:projexity/pages/auth_page.dart';
+import 'package:uuid/uuid.dart';
+
+import '../blocs/onboarding/onboarding_bloc.dart';
+import '../models/user_model.dart';
 
 /// This class is the implementation of our starting page
 
@@ -42,6 +47,18 @@ class StartPage extends StatelessWidget {
                     SizedBox(height: 50),
                     ElevatedButton(
                       onPressed: () {
+                        User user = User(
+                            id: const Uuid().v1(),
+                            name: '',
+                            age: 0,
+                            profileImageUrl: '',
+                            interests: [],
+                            skills: []);
+                        context.read<OnboardingBloc>().add(
+                              StartOnboarding(
+                                user: user,
+                              ),
+                            );
                         Navigator.push(
                           context,
                           MaterialPageRoute(

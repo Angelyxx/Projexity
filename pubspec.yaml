@@ -53,7 +53,8 @@ dependencies:
   image_picker:
   database_repository:
   storage_repository:
-
+  flutter_bloc:
+  uuid:
 
 dev_dependencies:
   flutter_test:

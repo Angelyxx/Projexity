@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/pages/login_page.dart';
 import 'package:projexity/pages/auth_page.dart';
+import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:uuid/uuid.dart';
 
 import '../blocs/onboarding/onboarding_bloc.dart';
@@ -56,7 +57,7 @@ class StartPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AuthPage()),
+                            builder: (context) => const OnBoardingScreen()),
                       );
                     },
                     style: ButtonStyle(

@@ -20,8 +20,10 @@ class _ViewListingState extends State<ViewListing> {
   }
 
   Future<void> _fetchListingData() async {
-    final listingSnapshot =
-        await FirebaseFirestore.instance.collection('listings').doc(widget.listingId).get();
+    final listingSnapshot = await FirebaseFirestore.instance
+        .collection('listings')
+        .doc(widget.listingId)
+        .get();
     setState(() {
       listingData = listingSnapshot;
     });
@@ -108,11 +110,10 @@ class _ViewListingState extends State<ViewListing> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GestureDetector(
-          onTap: () {
-            //Handle Button Click Here
-          },
-          child: _buildRoundedButton()
-          ),
+            onTap: () {
+              //Handle Button Click Here
+            },
+            child: _buildRoundedButton()),
       ),
     );
   }

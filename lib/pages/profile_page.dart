@@ -30,7 +30,7 @@ Widget buildTop() {
 
 Widget buildContent() => Column(children: [
       const SizedBox(height: 8),
-      Text('AHHH',
+      Text('Bob',
           textAlign: TextAlign.center,
           style: GoogleFonts.lato(
             fontSize: 25,
@@ -38,7 +38,7 @@ Widget buildContent() => Column(children: [
           )),
       const SizedBox(height: 8),
       Text(
-        'Your mum',
+        'Member',
         style: TextStyle(fontSize: 20, color: Colors.grey),
       ),
       const SizedBox(height: 8),

@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projexity/pages/navigation.dart';
 import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:projexity/repositories/databases/database_repository.dart';
 import 'package:projexity/repositories/storage/storage_repository,.dart';
-import 'blocs/images/images_bloc.dart';
 import 'blocs/onboarding/onboarding_bloc.dart';
 import 'firebase_options.dart';
 //import 'package:projexity/pages/login_page.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/blocs/onboarding/onboarding_bloc.dart';
 //import 'package:projexity/pages/explore_page.dart';
 import 'package:projexity/pages/home_page.dart';
+import 'package:projexity/pages/navigation.dart';
 import 'package:projexity/pages/qna_screens/dob_page.dart';
 import 'package:projexity/pages/qna_screens/interest_page.dart';
 import 'package:projexity/pages/qna_screens/name_page.dart';
@@ -78,7 +79,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return HomePage(); //Go to explore page
+                                  return Navigation(); //Go to explore page
                                 }));
                               },
                               child: Text('done'))

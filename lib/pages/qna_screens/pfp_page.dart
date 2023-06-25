@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projexity/blocs/images/images_bloc.dart';
 import 'package:projexity/blocs/onboarding/onboarding_bloc.dart';
 import 'package:projexity/repositories/storage/storage_repository,.dart';
 

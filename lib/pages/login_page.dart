@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
+import 'package:projexity/pages/navigation.dart';
 import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:projexity/services/auth_service.dart';
 import 'package:projexity/pages/forgot_pw_page.dart';
@@ -70,52 +71,52 @@ class _LoginPageState extends State<LoginPage> {
   }
   */
 
-  try {
-    final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
-
-    if (user != null) {
-      // User exists in the database, proceed to sign in
-      Navigator.pop(context); // Pop the loading indicator dialog
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+    try {
+      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
-    } else {
-      // User does not exist in the database
-      print('No user found');
-    }
-  } on FirebaseAuthException catch (e) {
-    // Handle specific authentication errors and display error messages
-    String errorMessage = 'An error occurred. Please try again later.';
 
-    if (e.code == 'invalid-email') {
-      errorMessage = 'Invalid email. Please enter a valid email address.';
-    } else if (e.code == 'wrong-password') {
-      errorMessage = 'Invalid password. Please enter a valid password.';
-    }
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Sign In Error'),
-          content: Text(errorMessage),
-          actions: [
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-            ),
-          ],
+      if (user != null) {
+        // User exists in the database, proceed to sign in
+        Navigator.pop(context); // Pop the loading indicator dialog
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
-      },
-    );
+      } else {
+        // User does not exist in the database
+        print('No user found');
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle specific authentication errors and display error messages
+      String errorMessage = 'An error occurred. Please try again later.';
+
+      if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email. Please enter a valid email address.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Invalid password. Please enter a valid password.';
+      }
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sign In Error'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
 
   @override
   void dispose() {
@@ -274,12 +275,14 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text('Missing Information'),
-                                content: Text('Please enter both email and password.'),
+                                content: Text(
+                                    'Please enter both email and password.'),
                                 actions: [
                                   TextButton(
                                     child: Text('OK'),
                                     onPressed: () {
-                                      Navigator.pop(context); // Close the dialog
+                                      Navigator.pop(
+                                          context); // Close the dialog
                                     },
                                   ),
                                 ],
@@ -298,24 +301,29 @@ class _LoginPageState extends State<LoginPage> {
 
                           try {
                             await signIn(context);
-                            Navigator.pop(context); // Pop the loading indicator dialog
+                            Navigator.pop(
+                                context); // Pop the loading indicator dialog
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => HomePage()),
+                              MaterialPageRoute(
+                                  builder: (context) => Navigation()),
                             );
                           } catch (error) {
-                            Navigator.pop(context); // Pop the loading indicator dialog
+                            Navigator.pop(
+                                context); // Pop the loading indicator dialog
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text('Sign In Error'),
-                                  content: Text('An error occurred. Please try again later.'),
+                                  content: Text(
+                                      'An error occurred. Please try again later.'),
                                   actions: [
                                     TextButton(
                                       child: Text('OK'),
                                       onPressed: () {
-                                        Navigator.pop(context); // Close the dialog
+                                        Navigator.pop(
+                                            context); // Close the dialog
                                       },
                                     ),
                                   ],

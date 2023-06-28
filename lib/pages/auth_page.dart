@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projexity/pages/login_page.dart';
+import 'package:projexity/pages/navigation.dart';
 import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:projexity/pages/start_page.dart';
 import 'alt_page.dart';
@@ -22,10 +23,10 @@ class AuthPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return const HomePage(); //if the user exist, return home page
-              return OnBoardingScreen(); //if the user exist, return home page
+              return Navigation(); //if the user exist, return home page
+              //return OnBoardingScreen();
             } else {
-              return const AltPage();
+              //return const AltPage();
               return LoginPage(
                 showRegisterPage: () {},
               );

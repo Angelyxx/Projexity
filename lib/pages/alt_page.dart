@@ -9,16 +9,15 @@ class AltPage extends StatefulWidget {
   State<AltPage> createState() => _AltPageState();
 }
 
-
 class _AltPageState extends State<AltPage> {
 //initially shows the login page
-bool showLoginPage = true;
+  bool showLoginPage = true;
 
   void toggleScreens() {
-  setState(() {
-    showLoginPage = !showLoginPage;
-  });
-}
+    setState(() {
+      showLoginPage = !showLoginPage;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

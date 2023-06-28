@@ -49,27 +49,27 @@ Widget buildAbout() => Padding(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Bio',
-            textAlign: TextAlign.left,
-            style: GoogleFonts.lato(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            )),
-        const SizedBox(height: 8),
-        Text('I aspire to be a software engineer',
-            textAlign: TextAlign.left,
-            style: GoogleFonts.lato(
-              fontSize: 18,
-            )),
-        const SizedBox(height: 8),
         Text('Interests',
             textAlign: TextAlign.left,
             style: GoogleFonts.lato(
               fontSize: 28,
               fontWeight: FontWeight.bold,
             )),
+        const SizedBox(height: 8),
+        Text('- Java ',
+            textAlign: TextAlign.left,
+            style: GoogleFonts.lato(
+              fontSize: 18,
+            )),
+        const SizedBox(height: 30),
+        Text('Skills',
+            textAlign: TextAlign.left,
+            style: GoogleFonts.lato(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            )),
         const SizedBox(height: 11),
-        Text('- Java  \n -Python',
+        Text(' - Python',
             textAlign: TextAlign.left,
             style: GoogleFonts.lato(
               fontSize: 18,

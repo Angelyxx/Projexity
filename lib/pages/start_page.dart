@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projexity/pages/alt_page.dart';
 import 'package:projexity/pages/login_page.dart';
 import 'package:projexity/pages/auth_page.dart';
 import 'package:projexity/pages/onboarding_screen.dart';
@@ -42,23 +43,24 @@ class StartPage extends StatelessWidget {
                   SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: () {
-                      User user = User(
-                          id: const Uuid().v1(),
-                          name: '',
-                          age: 0,
-                          profileImageUrl: '',
-                          interests: [],
-                          skills: []);
-                      context.read<OnboardingBloc>().add(
-                            StartOnboarding(
-                              user: user,
-                            ),
-                          );
+                      // User user = User(
+                      //     id: const Uuid().v1(),
+                      //     name: '',
+                      //     age: 0,
+                      //     profileImageUrl: '',
+                      //     interests: [],
+                      //     skills: []);
+                      // context.read<OnboardingBloc>().add(
+                      //       StartOnboarding(
+                      //         user: user,
+                      //       ),
+                      //     );
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const OnBoardingScreen()),
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const AuthPage(), // OnBoardingScreen()),
+                          ));
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

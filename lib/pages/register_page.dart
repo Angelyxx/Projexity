@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
         //go to onboarding
         member.User user = member.User(
-            //id: const Uuid().v1(),
+
             //id: context.read<SignupCubit>().state.user!.uid, //returns nulls for some reason?
             id: FirebaseAuth.instance.currentUser!.uid,
             name: '',

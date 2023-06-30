@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pop(context); // Pop the loading indicator dialog
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => Navigation()), //Homepage
         );
       } else {
         // User does not exist in the database

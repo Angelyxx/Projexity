@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/blocs/onboarding/onboarding_bloc.dart';
+import 'package:projexity/cubits/signup/signup_cubit.dart';
 //import 'package:projexity/pages/explore_page.dart';
 import 'package:projexity/pages/home_page.dart';
 import 'package:projexity/pages/navigation.dart';
@@ -8,6 +9,7 @@ import 'package:projexity/pages/qna_screens/dob_page.dart';
 import 'package:projexity/pages/qna_screens/interest_page.dart';
 import 'package:projexity/pages/qna_screens/name_page.dart';
 import 'package:projexity/pages/qna_screens/skills_page.dart';
+import 'package:projexity/repositories/auth_repository.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../models/user_model.dart';
@@ -25,6 +27,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   PageController _controller = PageController();
 
   static const String routeName = '/onboarding';
+  static Route route() {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: routeName),
+      builder: (context) => BlocProvider(
+        create: (_) =>
+            SignupCubit(authRepository: context.read<AuthRepository>()),
+        child: OnBoardingScreen(),
+      ),
+    );
+  }
 
   // Keep track if we're on the last page
   bool onLastPage = false;

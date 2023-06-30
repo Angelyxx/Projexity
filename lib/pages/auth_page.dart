@@ -27,9 +27,10 @@ class AuthPage extends StatelessWidget {
               //return OnBoardingScreen();
             } else {
               //return const AltPage();
-              return LoginPage(
-                showRegisterPage: () {},
-              );
+              // return LoginPage(
+              //   showRegisterPage: () {},
+              // );
+              return AltPage();
             }
           }),
     );

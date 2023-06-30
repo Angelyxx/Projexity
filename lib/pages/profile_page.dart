@@ -46,6 +46,7 @@ class ProfilePage extends StatelessWidget {
         buildTop(),
         buildContent(),
         buildAbout(),
+        const SizedBox(height: 10),
         TextButton(
           onPressed: () {
             RepositoryProvider.of<AuthRepository>(context).signOut();

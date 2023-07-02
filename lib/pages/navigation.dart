@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projexity/blocs/profile/profile_bloc.dart';
 import 'package:projexity/pages/chat_page.dart';
 import 'package:projexity/pages/home_page.dart';
 import 'package:projexity/pages/likes_page.dart';
@@ -45,6 +47,11 @@ class _NavigationState extends State<Navigation> {
               backgroundColor: const Color.fromRGBO(249, 200, 6, 1))
         ],
         onTap: (index) {
+          // if (index == 3) {
+          //   LoadProfile(
+          //     userId: FirebaseAuth.instance.currentUser!.uid,
+          //   );
+          // }
           setState(() {
             _currentIndex = index;
           });

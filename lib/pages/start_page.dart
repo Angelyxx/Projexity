@@ -44,12 +44,12 @@ class StartPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // User user = User(
-                      //     id: const Uuid().v1(),
+                      //      id: const Uuid().v1(),
                       //     name: '',
                       //     age: 0,
                       //     profileImageUrl: '',
-                      //     interests: [],
-                      //     skills: []);
+                      //      interests: [],
+                      //      skills: []);
                       // context.read<OnboardingBloc>().add(
                       //       StartOnboarding(
                       //         user: user,

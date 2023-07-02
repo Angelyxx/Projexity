@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projexity/blocs/profile/profile_bloc.dart';
 import 'package:projexity/pages/login_page.dart';
 
 import '../blocs/auth/auth_bloc.dart';
@@ -40,36 +41,48 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        buildTop(),
-        buildContent(),
-        buildAbout(),
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: () {
-            RepositoryProvider.of<AuthRepository>(context).signOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LoginPage(
-                        showRegisterPage: () {},
-                      )),
-            );
-          },
-          child: Center(
-            child: Text(
-              'Sign Out',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall!
-                  .copyWith(color: Theme.of(context).primaryColor),
+        body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      if (state is ProfileLoading) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      if (state is ProfileLoaded) {
+        return ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            buildTop(),
+            buildContent(),
+            buildAbout(),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                RepositoryProvider.of<AuthRepository>(context).signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LoginPage(
+                            showRegisterPage: () {},
+                          )),
+                );
+              },
+              child: Center(
+                child: Text(
+                  'Sign Out',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: Theme.of(context).primaryColor),
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-    ));
+          ],
+        );
+      } else {
+        return Text("Something went wrong");
+      }
+    }));
   }
 }
 

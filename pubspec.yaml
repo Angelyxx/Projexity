@@ -48,9 +48,9 @@ dependencies:
 
   #other dependencies
   equatable: ^2.0.5
+  image_picker: ^1.0.0
   cross_file:
   bloc:
-  image_picker:
   database_repository:
   storage_repository:
   flutter_bloc:

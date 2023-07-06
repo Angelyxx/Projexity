@@ -73,13 +73,12 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => ProfileBloc(
-                authBloc: BlocProvider.of<AuthBloc>(context),
+                //authBloc: BlocProvider.of<AuthBloc>(context),
                 databaseRepository: context.read<DatabaseRepository>(),
               )..add(
-                  LoadProfile(
-                    userId: FirebaseAuth.instance.currentUser!.uid,
-                    //BlocProvider.of<AuthBloc>(context).state.user!.uid''
-                  ),
+                  LoadProfile(userId: FirebaseAuth.instance.currentUser!.uid
+                      //BlocProvider.of<AuthBloc>(context).state.user!.uid''
+                      ),
                 ),
             ),
           ],

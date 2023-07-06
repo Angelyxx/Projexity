@@ -87,6 +87,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+
       ///List view to scroll downwards
       body: ListView.builder(
         itemCount: listingsData.length,
@@ -108,8 +109,10 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               child: ListTile(
-                title: Text(listingsData[index]['projectTitle'], style: GoogleFonts.bebasNeue(fontSize: 50)),
-                subtitle: Text(listingsData[index]['projectSubtitle'], style: GoogleFonts.bebasNeue(fontSize: 35)),
+                title: Text(listingsData[index]['projectTitle'],
+                    style: GoogleFonts.bebasNeue(fontSize: 50)),
+                subtitle: Text(listingsData[index]['projectSubtitle'],
+                    style: GoogleFonts.bebasNeue(fontSize: 35)),
                 onTap: () {
                   String listingId = listingsData[index].id;
                   Navigator.push(

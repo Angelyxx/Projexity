@@ -9,7 +9,6 @@ abstract class ProfileEvent extends Equatable {
 
 class LoadProfile extends ProfileEvent {
   final String userId;
-
   const LoadProfile({required this.userId});
 
   @override

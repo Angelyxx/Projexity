@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class Listing extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class _ListingState extends State<Listing> {
   TextEditingController _projectDescriptionController = TextEditingController();
   TextEditingController _recommendedSkillsController = TextEditingController();
   TextEditingController _numberOfMembersController = TextEditingController();
+  File? imageFile;
+
 
   @override
   void dispose() {
@@ -24,6 +30,20 @@ class _ListingState extends State<Listing> {
     _recommendedSkillsController.dispose();
     _numberOfMembersController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectImage() async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = File(pickedFile.path);
+        });
+      }
+    } catch (e) { 
+      // Handle the error
+      print('Image selection error: $e');
+    }
   }
 
   @override
@@ -48,7 +68,6 @@ class _ListingState extends State<Listing> {
           ),
       ),
 
-
          body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -56,8 +75,20 @@ class _ListingState extends State<Listing> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildCategoryTitle('Project Banner'),
-                SizedBox(height: 10.0),
-                _buildRoundedContainer(TextEditingController()), // Add text field controllers here
+                const SizedBox(height: 10.0),
+                GestureDetector(
+                  onTap: _selectImage,
+                  child: Container(
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: imageFile != null
+                        ? Image.file(imageFile!, fit: BoxFit.cover)
+                        : Icon(Icons.add_photo_alternate, size: 50.0, color: Colors.grey),
+                  ),
+                ),
                 SizedBox(height: 30.0),
                 _buildCategoryTitle('Project Title'),
                 SizedBox(height: 10.0),
@@ -144,13 +175,21 @@ class _ListingState extends State<Listing> {
     );
   }
 
-  void _showProjectListedDialog(BuildContext context) {
+  void _showProjectListedDialog(BuildContext context) async {
   // Get the values from the text fields
     String projectTitle = _projectTitleController.text;
     String projectSubtitle = _projectSubtitleController.text;
     String projectDescription = _projectDescriptionController.text;
     String recommendedSkills = _recommendedSkillsController.text;
     String numberOfMembers = _numberOfMembersController.text;
+
+      // Upload image to Firebase Storage
+    String? imageUrl;
+    if (imageFile != null) {
+      final storageRef = FirebaseStorage.instance.ref().child('listing_images/${DateTime.now().millisecondsSinceEpoch}');
+      await storageRef.putFile(imageFile!);
+      imageUrl = await storageRef.getDownloadURL();
+    }
 
     // Store the data in Firestore
     FirebaseFirestore.instance.collection('listings').add({
@@ -159,6 +198,7 @@ class _ListingState extends State<Listing> {
       'projectDescription': projectDescription,
       'recommendedSkills': recommendedSkills,
       'numberOfMembers': numberOfMembers,
+      'imageUrl': imageUrl,
     }).then((_) {
     // Show the success dialog
     showDialog(

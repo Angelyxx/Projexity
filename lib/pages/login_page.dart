@@ -239,30 +239,6 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 30),
 
-                    //Sign in Button
-                    /*
-                    LoginButton(
-                      onTap: () async {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        );
-                        await signIn();
-                        Navigator.pop(
-                            context); // Pop the loading indicator dialog
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OnBoardingScreen()),
-                          //MaterialPageRoute(builder: (context) => ExplorePage()),
-                        );
-                      },
-                    ),
-                    */
                     // Sign in Button
                     LoginButton(
                       onTap: () async {

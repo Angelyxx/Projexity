@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/blocs/profile/profile_bloc.dart';
-import 'package:projexity/pages/chat_page.dart';
+import 'package:projexity/pages/chatting_screens/chat_main.dart';
+import 'package:projexity/pages/chatting_screens/chat_page.dart';
 import 'package:projexity/pages/home_page.dart';
 import 'package:projexity/pages/likes_page.dart';
 import 'package:projexity/pages/profile_page.dart';
@@ -20,7 +21,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
 
-  final tabs = [HomePage(), ChatPage(), LikesPage(), ProfilePage()];
+  final tabs = [HomePage(), ChatMain(), LikesPage(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +52,6 @@ class _NavigationState extends State<Navigation> {
               backgroundColor: const Color.fromRGBO(249, 200, 6, 1))
         ],
         onTap: (index) {
-          // if (index == 3) {
-          //   BlocProvider(
-          //     create: (context) => ProfileBloc(
-          //       //authBloc: BlocProvider.of<AuthBloc>(context),
-          //       databaseRepository: context.read<DatabaseRepository>(),
-          //     )..add(
-          //         LoadProfile(userId: FirebaseAuth.instance.currentUser!.uid
-          //             //BlocProvider.of<AuthBloc>(context).state.user!.uid''
-          //             ),
-          //       ),
-          //   );
-          // }
           setState(() {
             _currentIndex = index;
           });

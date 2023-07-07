@@ -92,30 +92,23 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(fontSize: 30.0),
         ),
         actions: [
-          IconButton(
-            iconSize: 30.0,
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Listing(),
-                ),
-              );
-            },
-          ),
+          // IconButton(
+          //   iconSize: 30.0,
+          //   icon: Icon(Icons.add),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => Listing(),
+          //       ),
+          //     );
+          //   },
+          // ),
           IconButton(
             iconSize: 30.0,
             icon: Icon(Icons.search),
             onPressed: () {
               // Handle the search action
-            },
-          ),
-          IconButton(
-            iconSize: 30.0,
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              _signOut();
             },
           ),
         ],

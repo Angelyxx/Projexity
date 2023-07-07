@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/pages/alt_page.dart';
@@ -13,7 +15,6 @@ import '../models/user_model.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({Key? key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,65 +22,46 @@ class StartPage extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(249, 200, 6, 1),
       body: Container(
         child: SingleChildScrollView(
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Image.asset('lib/images/projexity_name.png'),
-                ],
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 75),
+            //logo
+            Image.asset(
+              'lib/images/banner.png',
+              //height: 90,
+            ),
+            //const SizedBox(height: 15),
+            Image.asset(
+              'lib/images/icon.png',
+              height: 250,
+              width: 250,
+            ),
+            const SizedBox(height: 75),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const AuthPage(), // OnBoardingScreen()),
+                    ));
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromRGBO(90, 105, 120, 1),
+                ),
+                minimumSize: MaterialStateProperty.all<Size>(
+                  const Size(200, 60),
+                ),
               ),
-              Column(
-                children: [
-                  SizedBox(height: 100),
-                  Positioned(
-                    top: 170,
-                    child: Image.asset(
-                      'lib/images/icon.png',
-                      height: 350,
-                      width: 350,
-                    ),
-                  ),
-                  SizedBox(height: 50),
-                  ElevatedButton(
-                    onPressed: () {
-                      // User user = User(
-                      //     id: const Uuid().v1(),
-                      //     name: '',
-                      //     age: 0,
-                      //     profileImageUrl: '',
-                      //     interests: [],
-                      //     skills: []);
-                      // context.read<OnboardingBloc>().add(
-                      //       StartOnboarding(
-                      //         user: user,
-                      //       ),
-                      //     );
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const AuthPage(), // OnBoardingScreen()),
-                          ));
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromRGBO(90, 105, 120, 1),
-                      ),
-                      minimumSize: MaterialStateProperty.all<Size>(
-                        const Size(200, 60),
-                      ),
-                    ),
-                    child: const Text(
-                      "Let's get started!",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                ],
+              child: const Text(
+                "Let's get started!",
+                style: TextStyle(fontSize: 20),
               ),
-            ],
-          ),
-        ),
+            ),
+          ],
+        )),
       ),
     );
   }

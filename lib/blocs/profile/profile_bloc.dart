@@ -27,15 +27,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<LoadProfile>(_onLoadProfile);
     on<UpdateProfile>(_onUpdateProfile);
 
-    LoadProfile(userId: auth.FirebaseAuth.instance.currentUser!.uid);
-    // _authSubscription = _authBloc.stream.listen((state) {
-    //   if (state.user is AuthUserChanged) {
-    //     if (state.user != null) {
-    //       add(LoadProfile(userId: state.user!.uid));
-    //     }
-    //   }
-    // });
-    //LoadProfile(userId: state.user!.uid);
+    //LoadProfile(userId: auth.FirebaseAuth.instance.currentUser!.uid);
   }
 
   Future<void> _onLoadProfile(
@@ -47,7 +39,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var doc = await userCollection.doc(event.userId).get();
 
     if (doc.exists) {
-      User user = _databaseRepository.getUserStreamRhys(event.userId) as User;
+      print("data loaded: not yet");
+      User user = await _databaseRepository.getUser(event.userId);
+      print("data loaded: " + user.name);
       add(UpdateProfile(user: user));
     } else {
       print('userId does not exist in the firebase');
@@ -59,6 +53,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     UpdateProfile event,
     Emitter<ProfileState> emit,
   ) {
+    print("updating profile: " + event.user.name);
     emit(ProfileLoaded(user: event.user));
   }
 

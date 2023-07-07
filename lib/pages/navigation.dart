@@ -2,11 +2,15 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projexity/blocs/profile/profile_bloc.dart';
 import 'package:projexity/pages/chat_page.dart';
 import 'package:projexity/pages/home_page.dart';
 import 'package:projexity/pages/likes_page.dart';
 import 'package:projexity/pages/profile_page.dart';
+import 'package:bloc/bloc.dart';
+
+import '../repositories/databases/database_repository.dart';
 
 class Navigation extends StatefulWidget {
   @override
@@ -48,8 +52,15 @@ class _NavigationState extends State<Navigation> {
         ],
         onTap: (index) {
           // if (index == 3) {
-          //   LoadProfile(
-          //     userId: FirebaseAuth.instance.currentUser!.uid,
+          //   BlocProvider(
+          //     create: (context) => ProfileBloc(
+          //       //authBloc: BlocProvider.of<AuthBloc>(context),
+          //       databaseRepository: context.read<DatabaseRepository>(),
+          //     )..add(
+          //         LoadProfile(userId: FirebaseAuth.instance.currentUser!.uid
+          //             //BlocProvider.of<AuthBloc>(context).state.user!.uid''
+          //             ),
+          //       ),
           //   );
           // }
           setState(() {

@@ -8,6 +8,7 @@ import 'package:projexity/cubits/login/login_cubit.dart';
 import 'package:projexity/cubits/signup/signup_cubit.dart';
 import 'package:projexity/pages/navigation.dart';
 import 'package:projexity/pages/onboarding_screen.dart';
+import 'package:projexity/pages/start_page%20copy.dart';
 import 'package:projexity/repositories/auth_repository.dart';
 import 'package:projexity/repositories/databases/database_repository.dart';
 import 'package:projexity/repositories/storage/storage_repository,.dart';
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
+            //home: StartPageCopy(),
             home: StartPage(),
           ),
         ));

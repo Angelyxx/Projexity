@@ -49,41 +49,47 @@ class PfpPage extends StatelessWidget {
                     const SizedBox(height: 35),
 
                     Container(
-                        height: 360,
-                        width: 360,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 3, color: Colors.white),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: Colors.white,
+                      height: 360,
+                      width: 360,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(width: 3, color: Colors.white),
+                      ),
+                      child: (images == '')
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.add_circle,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  ImagePicker _picker = ImagePicker();
+                                  final XFile? _image = await _picker.pickImage(
+                                      source: ImageSource.gallery);
+
+                                  if (_image == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('No image was selected')));
+                                  }
+
+                                  if (_image != null) {
+                                    print('Uploading ...');
+                                    //StorageRepository().uploadImage(_image);
+                                    context
+                                        .read<OnboardingBloc>()
+                                        .add(UpdateUserImages(image: _image));
+                                  }
+                                },
+                              ),
+                            )
+                          : Image.network(
+                              images,
+                              fit: BoxFit.cover,
                             ),
-                            onPressed: () async {
-                              ImagePicker _picker = ImagePicker();
-                              final XFile? _image = await _picker.pickImage(
-                                  source: ImageSource.gallery);
-
-                              if (_image == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('No image was selected')));
-                              }
-
-                              if (_image != null) {
-                                print('Uploading ...');
-                                //StorageRepository().uploadImage(_image);
-                                context
-                                    .read<OnboardingBloc>()
-                                    .add(UpdateUserImages(image: _image));
-                              }
-                            },
-                          ),
-                        )),
+                    ),
                     const SizedBox(height: 10),
                   ],
                 ),

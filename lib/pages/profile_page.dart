@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/blocs/profile/profile_bloc.dart';
+import 'package:projexity/pages/auth_page.dart';
 import 'package:projexity/pages/login_page.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../repositories/auth_repository.dart';
+import 'alt_page.dart';
 // Future<void> _signOut() async {
 //     await FirebaseAuth.instance.signOut();
 //     // Navigate to the start page or any other page you desire after sign-out
@@ -50,6 +52,7 @@ class ProfilePage extends StatelessWidget {
       }
 
       if (state is ProfileLoaded) {
+        print(state.user.interests.length);
         return ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -99,32 +102,39 @@ class ProfilePage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 48),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Interests',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.lato(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 8),
-                    Text('- Java ',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.lato(
-                          fontSize: 18,
-                        )),
-                    const SizedBox(height: 30),
-                    Text('Skills',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.lato(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 11),
-                    Text(' - Python',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.lato(
-                          fontSize: 18,
-                        )),
+                  children: <Widget>[
+                    for (int i = 0; i < state.user.interests.length; i++)
+                      Text(state.user.interests[i],
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.lato(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    //   Text('Interests',
+                    //       textAlign: TextAlign.left,
+                    //       style: GoogleFonts.lato(
+                    //         fontSize: 28,
+                    //         fontWeight: FontWeight.bold,
+                    //       )),
+                    // const SizedBox(height: 8),
+                    // Text('- Java ',
+                    //     textAlign: TextAlign.left,
+                    //     style: GoogleFonts.lato(
+                    //       fontSize: 18,
+                    //     )),
+                    // const SizedBox(height: 30),
+                    // Text('Skills',
+                    //     textAlign: TextAlign.left,
+                    //     style: GoogleFonts.lato(
+                    //       fontSize: 28,
+                    //       fontWeight: FontWeight.bold,
+                    //     )),
+                    // const SizedBox(height: 11),
+                    // Text(' - Python',
+                    //     textAlign: TextAlign.left,
+                    //     style: GoogleFonts.lato(
+                    //       fontSize: 18,
+                    //     )),
                   ],
                 )),
             const SizedBox(height: 10),
@@ -133,10 +143,7 @@ class ProfilePage extends StatelessWidget {
                 RepositoryProvider.of<AuthRepository>(context).signOut();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => LoginPage(
-                            showRegisterPage: () {},
-                          )),
+                  MaterialPageRoute(builder: (context) => AltPage()),
                 );
               },
               child: Center(

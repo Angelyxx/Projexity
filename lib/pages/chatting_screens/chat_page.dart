@@ -74,7 +74,10 @@ class ChatPage extends StatelessWidget {
                   //                 ),
                 ));
               }),
-        ))
+        )),
+        //Text input
+        Container(
+            padding: const EdgeInsets.all(20.0), height: 100, child: Row())
       ]),
     );
   }

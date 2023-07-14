@@ -61,7 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
             age: 0,
             profileImageUrl: '',
             interests: [],
-            skills: []);
+            skills: [],
+            matches: []);
 
         context.read<OnboardingBloc>().add(StartOnboarding(
               user: user,

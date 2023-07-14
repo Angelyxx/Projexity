@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:projexity/pages/chatting_screens/chat_page.dart';
 
 class ViewListing extends StatefulWidget {
   final String listingId;
@@ -111,7 +113,19 @@ class _ViewListingState extends State<ViewListing> {
         padding: const EdgeInsets.all(16.0),
         child: GestureDetector(
             onTap: () {
-              //Handle Button Click Here
+              final user = FirebaseAuth.instance.currentUser!;
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .update({
+                'matches': FieldValue.arrayUnion([listingData!["owner"]])
+              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(),
+                ),
+              );
             },
             child: _buildRoundedButton()),
       ),

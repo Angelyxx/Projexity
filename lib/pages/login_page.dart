@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projexity/components/login_button.dart';
 import 'package:projexity/components/square_tile.dart';
@@ -10,6 +11,9 @@ import 'package:projexity/pages/onboarding_screen.dart';
 import 'package:projexity/services/auth_service.dart';
 import 'package:projexity/pages/forgot_pw_page.dart';
 import 'package:projexity/pages/home_page.dart';
+
+import '../blocs/profile/profile_bloc.dart';
+import '../repositories/databases/database_repository.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -78,6 +82,17 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (user != null) {
+        print("FirebaseAuth.instance.currentUser!.uid");
+        BlocProvider(
+          create: (context) => ProfileBloc(
+            //authBloc: BlocProvider.of<AuthBloc>(context),
+            databaseRepository: context.read<DatabaseRepository>(),
+          )..add(
+              LoadProfile(userId: FirebaseAuth.instance.currentUser!.uid
+                  //BlocProvider.of<AuthBloc>(context).state.user!.uid''
+                  ),
+            ),
+        );
         // User exists in the database, proceed to sign in
         Navigator.pop(context); // Pop the loading indicator dialog
         Navigator.push(

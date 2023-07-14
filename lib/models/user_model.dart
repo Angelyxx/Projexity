@@ -7,7 +7,8 @@ class User extends Equatable {
   final int age;
   final String profileImageUrl;
   final List<dynamic> interests;
-  final List<String> skills;
+  final List<dynamic> skills;
+  final List<dynamic>? matches;
 
   static User fromSnapshot(DocumentSnapshot snap) {
     User user = User(
@@ -17,6 +18,9 @@ class User extends Equatable {
       profileImageUrl: snap['profileImageUrl'],
       interests: snap['interests'],
       skills: snap['skills'],
+      matches: (snap['matches'] as List)
+          .map((matches) => matches as String)
+          .toList(),
     );
 
     return user;
@@ -28,17 +32,20 @@ class User extends Equatable {
       'age': age,
       'profileImageUrl': profileImageUrl,
       'interests': interests,
-      'skills': skills
+      'skills': skills,
+      'matches': matches
     };
   }
 
-  const User(
-      {required this.id,
-      required this.name,
-      required this.age,
-      required this.profileImageUrl,
-      required this.interests,
-      required this.skills});
+  const User({
+    required this.id,
+    required this.name,
+    required this.age,
+    required this.profileImageUrl,
+    required this.interests,
+    required this.skills,
+    required this.matches,
+  });
 
   User copyWith({
     String? id,
@@ -46,16 +53,17 @@ class User extends Equatable {
     int? age,
     String? profileImageUrl,
     List<dynamic>? interests,
-    List<String>? skills,
+    List<dynamic>? skills,
+    List<dynamic>? matches,
   }) {
     return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      age: age ?? this.age,
-      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
-      interests: interests ?? this.interests,
-      skills: skills ?? this.skills,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        age: age ?? this.age,
+        profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+        interests: interests ?? this.interests,
+        skills: skills ?? this.skills,
+        matches: matches ?? this.matches);
   }
 
   @override

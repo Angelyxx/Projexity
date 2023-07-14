@@ -17,7 +17,8 @@ class StartOnboarding extends OnboardingEvent {
         age: 0,
         profileImageUrl: '',
         interests: [],
-        skills: []),
+        skills: [],
+        matches: []),
   });
 
   @override

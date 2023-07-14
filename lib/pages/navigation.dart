@@ -21,7 +21,12 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
 
-  final tabs = [HomePage(), ChatMain(), LikesPage(), ProfilePage()];
+  final tabs = [
+    HomePage(),
+    ChatMain(userId: FirebaseAuth.instance.currentUser!.uid),
+    LikesPage(),
+    ProfilePage()
+  ];
 
   @override
   Widget build(BuildContext context) {

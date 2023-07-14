@@ -13,13 +13,13 @@ class DatabaseRepository extends BaseDatabaseStorageRepository {
   @override
   Future<User> getUser(String userId) async {
     User user = User(
-      id: userId,
-      name: 'nope',
-      age: 0,
-      profileImageUrl: '',
-      interests: [],
-      skills: [],
-    );
+        id: userId,
+        name: 'nope',
+        age: 0,
+        profileImageUrl: '',
+        interests: [],
+        skills: [],
+        matches: []);
 
     try {
       DocumentSnapshot<Map<String, dynamic>> querySnapshot =
@@ -34,13 +34,13 @@ class DatabaseRepository extends BaseDatabaseStorageRepository {
       print("getting " + querySnapshot.get('name'));
 
       User loadUser = User(
-        id: userId,
-        age: querySnapshot.get('age'),
-        name: querySnapshot.get('name'),
-        profileImageUrl: querySnapshot.get('profileImageUrl'),
-        interests: [],
-        skills: [],
-      );
+          id: userId,
+          age: querySnapshot.get('age'),
+          name: querySnapshot.get('name'),
+          profileImageUrl: querySnapshot.get('profileImageUrl'),
+          interests: [],
+          skills: [],
+          matches: []);
 
       return loadUser;
     } catch (e) {

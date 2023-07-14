@@ -16,30 +16,6 @@ Future<DocumentSnapshot<Map<String, dynamic>>> fetchUserDocument(
   return snapshot;
 }
 
-// Future<List<DocumentSnapshot<Map<String, dynamic>>>>
-//     fetchUserArrayData() async {
-//   String userId = FirebaseAuth.instance.currentUser!.uid;
-//   final snapshot =
-//       await FirebaseFirestore.instance.collection('users').doc(userId).get();
-
-//   final userDocs = snapshot.docs;
-//   final userArrayData = <DocumentSnapshot<Map<String, dynamic>>>[];
-
-//   for (final doc in userDocs) {
-//     final userIds = doc.data()['matches'] as List<dynamic>;
-//     for (final userId in userIds) {
-//       final userSnapshot = await FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(userId)
-//           .get();
-//       if (userSnapshot.exists) {
-//         userArrayData.add(userSnapshot);
-//       }
-//     }
-//   }
-//   return userArrayData;
-// }
-
 class ChatMain extends StatelessWidget {
   final String userId;
   ChatMain({required this.userId});

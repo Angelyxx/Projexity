@@ -25,7 +25,7 @@ class _NavigationState extends State<Navigation> {
     HomePage(),
     ChatMain(userId: FirebaseAuth.instance.currentUser!.uid),
     LikesPage(),
-    ProfilePage()
+    ProfilePage(userId: FirebaseAuth.instance.currentUser!.uid)
   ];
 
   @override

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,156 +13,144 @@ import 'package:projexity/pages/login_page.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../repositories/auth_repository.dart';
 import 'alt_page.dart';
-// Future<void> _signOut() async {
-//     await FirebaseAuth.instance.signOut();
-//     // Navigate to the start page or any other page you desire after sign-out
-//     // You can use Navigator.pushReplacement to navigate to a new screen and replace the current screen
-//     Navigator.pushReplacement(
-//       context,
-//       MaterialPageRoute(builder: (context) => AltPage()),
-//     );
-//   }
+
+Future<DocumentSnapshot<Map<String, dynamic>>> fetchUserDocument(
+    String userId) async {
+  final snapshot =
+      await FirebaseFirestore.instance.collection('users').doc(userId).get();
+  return snapshot;
+}
 
 class ProfilePage extends StatelessWidget {
+  final String userId;
+  ProfilePage({required this.userId});
   static const String routeName = '/profile';
-
-  static Route route() {
-    return MaterialPageRoute(
-        settings: RouteSettings(name: routeName),
-        builder: (context) {
-          print(BlocProvider.of<AuthBloc>(context).state);
-
-          return BlocProvider.of<AuthBloc>(context).state.status ==
-                  AuthStatus.unauthenticated
-              ? LoginPage(
-                  showRegisterPage: () {},
-                )
-              : ProfilePage();
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      if (state is ProfileLoading) {
-        return Center(
-          child: CircularProgressIndicator(),
-          //hello
-        );
-      }
-
-      if (state is ProfileLoaded) {
-        print(state.user.interests.length);
-        return ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: [
-                //cover image
-                Container(
-                    margin: EdgeInsets.only(bottom: 80),
-                    child: Container(
-                      color: Colors.grey,
-                      child: Image.asset(
-                        'lib/images/Placeholder-bckgrd.jpg',
-                        width: double.infinity,
-                        height: 260,
-                        fit: BoxFit.cover,
-                      ),
-                    )),
-                //profile image
-                Positioned(
-                  top: 180, //cover height - profile height
-                  child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                          NetworkImage(state.user.profileImageUrl)),
-                )
-              ],
-            ),
-            Column(children: [
-              const SizedBox(height: 8),
-              Text(state.user.name,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lato(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  )),
-              const SizedBox(height: 8),
-              Text(
-                'Member',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
-              ),
-              const SizedBox(height: 8),
-            ]),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 48),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    for (int i = 0; i < state.user.interests.length; i++)
-                      Text(state.user.interests[i],
-                          textAlign: TextAlign.left,
+        body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future: fetchUserDocument(userId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                final userData = snapshot.data?.data();
+                if (userData == null) {
+                  return Text("not found");
+                }
+                return ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        //cover image
+                        Container(
+                            margin: EdgeInsets.only(bottom: 80),
+                            child: Container(
+                              color: Colors.grey,
+                              child: Image.asset(
+                                'lib/images/Placeholder-bckgrd.jpg',
+                                width: double.infinity,
+                                height: 260,
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                        //profile image
+                        Positioned(
+                          top: 180, //cover height - profile height
+                          child: CircleAvatar(
+                              radius: 80,
+                              backgroundColor: Colors.grey,
+                              backgroundImage:
+                                  NetworkImage(userData["profileImageUrl"])),
+                        )
+                      ],
+                    ),
+                    Column(children: [
+                      const SizedBox(height: 8),
+                      Text(userData["name"],
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.lato(
-                            fontSize: 28,
+                            fontSize: 25,
                             fontWeight: FontWeight.bold,
                           )),
-                    //   Text('Interests',
-                    //       textAlign: TextAlign.left,
-                    //       style: GoogleFonts.lato(
-                    //         fontSize: 28,
-                    //         fontWeight: FontWeight.bold,
-                    //       )),
-                    // const SizedBox(height: 8),
-                    // Text('- Java ',
-                    //     textAlign: TextAlign.left,
-                    //     style: GoogleFonts.lato(
-                    //       fontSize: 18,
-                    //     )),
-                    // const SizedBox(height: 30),
-                    // Text('Skills',
-                    //     textAlign: TextAlign.left,
-                    //     style: GoogleFonts.lato(
-                    //       fontSize: 28,
-                    //       fontWeight: FontWeight.bold,
-                    //     )),
-                    // const SizedBox(height: 11),
-                    // Text(' - Python',
-                    //     textAlign: TextAlign.left,
-                    //     style: GoogleFonts.lato(
-                    //       fontSize: 18,
-                    //     )),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Member',
+                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 8),
+                    ]),
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 48),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            for (int i = 0;
+                                i < 0; // userData["interests"];
+                                i++)
+                              Text("interest",
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            //   Text('Interests',
+                            //       textAlign: TextAlign.left,
+                            //       style: GoogleFonts.lato(
+                            //         fontSize: 28,
+                            //         fontWeight: FontWeight.bold,
+                            //       )),
+                            // const SizedBox(height: 8),
+                            // Text('- Java ',
+                            //     textAlign: TextAlign.left,
+                            //     style: GoogleFonts.lato(
+                            //       fontSize: 18,
+                            //     )),
+                            // const SizedBox(height: 30),
+                            // Text('Skills',
+                            //     textAlign: TextAlign.left,
+                            //     style: GoogleFonts.lato(
+                            //       fontSize: 28,
+                            //       fontWeight: FontWeight.bold,
+                            //     )),
+                            // const SizedBox(height: 11),
+                            // Text(' - Python',
+                            //     textAlign: TextAlign.left,
+                            //     style: GoogleFonts.lato(
+                            //       fontSize: 18,
+                            //     )),
+                          ],
+                        )),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        RepositoryProvider.of<AuthRepository>(context)
+                            .signOut();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => AltPage()),
+                        );
+                      },
+                      child: Center(
+                        child: Text(
+                          'Sign Out',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                    ),
                   ],
-                )),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                RepositoryProvider.of<AuthRepository>(context).signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => AltPage()),
                 );
-              },
-              child: Center(
-                child: Text(
-                  'Sign Out',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall!
-                      .copyWith(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            ),
-          ],
-        );
-      } else {
-        return Text("Something went wrong");
-      }
-    }));
+              }
+            }));
   }
 }
 

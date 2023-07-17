@@ -12,6 +12,19 @@ class ViewListing extends StatefulWidget {
   _ViewListingState createState() => _ViewListingState();
 }
 
+Future<String> getNameFromUID(String uid) async {
+  final collection = FirebaseFirestore.instance.collection('users');
+  final document = await collection.doc(uid).get();
+
+  if (document.exists) {
+    final data = document.data();
+    final name = data?['name'];
+    return name;
+  } else {
+    return '';
+  }
+}
+
 class _ViewListingState extends State<ViewListing> {
   DocumentSnapshot? listingData;
 
@@ -112,7 +125,8 @@ class _ViewListingState extends State<ViewListing> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GestureDetector(
-            onTap: () {
+            onTap: () async {
+              final receiverID = listingData!["owner"];
               final user = FirebaseAuth.instance.currentUser!;
               FirebaseFirestore.instance
                   .collection('users')
@@ -120,10 +134,16 @@ class _ViewListingState extends State<ViewListing> {
                   .update({
                 'matches': FieldValue.arrayUnion([listingData!["owner"]])
               });
+              final uid = receiverID; // Replace with the actual UID
+              final receiverName = await getNameFromUID(uid);
+              print(receiverName);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatPage(),
+                  builder: (context) => ChatPage(
+                    receiverUserName: receiverName,
+                    receieverID: receiverID,
+                  ),
                 ),
               );
             },

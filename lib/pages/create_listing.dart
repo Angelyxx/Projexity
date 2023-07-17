@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import '../repositories/databases/database_repository.dart';
 
 class Listing extends StatefulWidget {
   @override
@@ -45,6 +48,28 @@ class _ListingState extends State<Listing> {
       print('Image selection error: $e');
     }
   }
+
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  //@override
+  // Future<void> uploadImage(User user, XFile image) async {
+  //   try {
+  //     await storage
+  //         .ref('${user.uid}/${image.name}')
+  //         .putFile(
+  //           File(image.path),
+  //         )
+  //         .then(
+  //           (p0) => DatabaseRepository().updateUserPicture(
+  //             user,
+  //             image.name,
+  //           ),
+  //         );
+  //   } catch (err) {
+  //     print(err);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

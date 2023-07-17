@@ -74,5 +74,16 @@ class DatabaseRepository extends BaseDatabaseStorageRepository {
     });
   }
 
+  @override
+  Future<void> updateListingPicture(User user, String imageName) async {
+    String downloadUrl =
+        await StorageRepository().getDownloadURL(user, imageName);
+
+    return _firebaseFirestore.collection('listings').doc(user.id).update({
+      //'imageUrls': FieldValue.arrayUnion([downloadUrl])
+      'profileImageUrl': downloadUrl
+    });
+  }
+
   void cancel() {}
 }

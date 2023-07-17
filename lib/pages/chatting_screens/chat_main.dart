@@ -16,6 +16,23 @@ Future<DocumentSnapshot<Map<String, dynamic>>> fetchUserDocument(
   return snapshot;
 }
 
+Future<QueryDocumentSnapshot<Map<String, dynamic>>?> fetchLastMessage(
+    String currentUserId, String receiverId) async {
+  List<String> ids = [currentUserId, receiverId];
+  ids.sort(); // Sort ids
+  String chatRoomId = ids.join("_");
+
+  final snapshot = await FirebaseFirestore.instance
+      .collection('chat_rooms')
+      .doc(chatRoomId)
+      .collection('messages')
+      .orderBy('timestamp', descending: true)
+      .limit(1)
+      .get();
+
+  return snapshot.docs.isNotEmpty ? snapshot.docs.first : null;
+}
+
 class ChatMain extends StatelessWidget {
   final String userId;
   ChatMain({required this.userId});
@@ -78,56 +95,72 @@ class ChatMain extends StatelessWidget {
                                         return Text("User not found");
                                       }
                                       //print(chatUser);
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => ChatPage(
-                                                      receieverID:
-                                                          chatUserId, //friend's user id
-                                                      receiverUserName:
-                                                          chatUser["name"],
-                                                    )),
-                                          );
-                                        },
-                                        // onTap: () {
-                                        // Navigator.pushNamed(dcocontext, '/chat',
-                                        //     arguments: activeMatches[index]);
-                                        // },
-                                        child: Row(
-                                          children: [
-                                            UserImage.small(
-                                                margin: const EdgeInsets.only(
-                                                    top: 10, right: 10),
-                                                height: 70,
-                                                width: 70,
-                                                url: chatUser["profileImageUrl"]
-                                                //url: activeMatches[index].matchedUser.imageUrls[0],
-                                                ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    //activeMatches[index].matchedUser.name,
-                                                    chatUser["name"],
-                                                    // chatUser['name'],
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                SizedBox(height: 5),
-                                                //last text
-                                                Text(""),
-                                                SizedBox(height: 5),
-                                                //time stamp
-                                                Text("4:30"),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      );
+                                      return FutureBuilder<
+                                              DocumentSnapshot<
+                                                  Map<String, dynamic>>>(
+                                          builder: (context, messageSnapshot) {
+                                        final lastMessage =
+                                            messageSnapshot.data?.data();
+                                        print(lastMessage);
+                                        final lastText =
+                                            lastMessage?['message'] ?? '';
+                                        final lastTimestamp =
+                                            lastMessage?['timestamp'] ?? '';
+
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPage(
+                                                        receieverID:
+                                                            chatUserId, //friend's user id
+                                                        receiverUserName:
+                                                            chatUser["name"],
+                                                      )),
+                                            );
+                                          },
+                                          // onTap: () {
+                                          // Navigator.pushNamed(dcocontext, '/chat',
+                                          //     arguments: activeMatches[index]);
+                                          // },
+                                          child: Row(
+                                            children: [
+                                              UserImage.small(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10, right: 10),
+                                                  height: 70,
+                                                  width: 70,
+                                                  url: chatUser[
+                                                      "profileImageUrl"]
+                                                  //url: activeMatches[index].matchedUser.imageUrls[0],
+                                                  ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      //activeMatches[index].matchedUser.name,
+                                                      chatUser["name"],
+                                                      // chatUser['name'],
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  SizedBox(height: 5),
+                                                  //last text
+                                                  Text(lastText),
+                                                  SizedBox(height: 5),
+                                                  //time stamp
+                                                  Text(
+                                                      lastTimestamp.toString()),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      });
                                     });
                               }
                             })

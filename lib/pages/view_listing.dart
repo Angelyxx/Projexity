@@ -82,6 +82,9 @@ class _ViewListingState extends State<ViewListing> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image.network(
+            //   listingData?['imageUrl'],
+            // ),
             Text(
               listingData!['projectTitle'],
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -127,6 +130,8 @@ class _ViewListingState extends State<ViewListing> {
         child: GestureDetector(
             onTap: () async {
               final receiverID = listingData!["owner"];
+
+              //update current user's message array
               final user = FirebaseAuth.instance.currentUser!;
               FirebaseFirestore.instance
                   .collection('users')
@@ -134,6 +139,15 @@ class _ViewListingState extends State<ViewListing> {
                   .update({
                 'matches': FieldValue.arrayUnion([listingData!["owner"]])
               });
+
+              //update recipient's array
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(listingData!["owner"])
+                  .update({
+                'matches': FieldValue.arrayUnion([user.uid])
+              });
+
               final uid = receiverID; // Replace with the actual UID
               final receiverName = await getNameFromUID(uid);
               print(receiverName);

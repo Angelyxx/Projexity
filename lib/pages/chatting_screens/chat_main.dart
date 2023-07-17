@@ -83,8 +83,12 @@ class ChatMain extends StatelessWidget {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ChatPage()),
+                                                builder: (context) => ChatPage(
+                                                      receieverID:
+                                                          chatUserId, //friend's user id
+                                                      receiverUserName:
+                                                          chatUser["name"],
+                                                    )),
                                           );
                                         },
                                         // onTap: () {
@@ -115,22 +119,10 @@ class ChatMain extends StatelessWidget {
                                                             FontWeight.bold)),
                                                 SizedBox(height: 5),
                                                 //last text
-                                                Text(""
-                                                    // activeMatches[index]
-                                                    //     .chat![0]
-                                                    //     .messages[0]
-                                                    //     .message,
-                                                    //style: Theme.of(context).textTheme.headline6,
-                                                    ),
+                                                Text(""),
                                                 SizedBox(height: 5),
                                                 //time stamp
-                                                Text("4:30"
-                                                    // activeMatches[index]
-                                                    //     .chat![0]
-                                                    //     .messages[0]
-                                                    //     .timeString,
-
-                                                    ),
+                                                Text("4:30"),
                                               ],
                                             )
                                           ],

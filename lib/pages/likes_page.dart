@@ -26,10 +26,15 @@ class _LikesPageState extends State<LikesPage> {
     final user = FirebaseAuth.instance.currentUser!;
     final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
     final userData = await userDoc.get();
-    final likedListingIds = List<String>.from(userData.data()?['likedListings'] ?? []);
+    final likedListingIds =
+        List<String>.from(userData.data()?['likedListings'] ?? []);
 
     // Fetch the liked listings data from the listings collection
-    final likedListingsSnapshot = await FirebaseFirestore.instance.collection('listings').where(FieldPath.documentId, whereIn: likedListingIds).get();
+    final likedListingsSnapshot =
+        await FirebaseFirestore.instance.collection('listings').where(
+              FieldPath.documentId,
+              whereIn: likedListingIds,
+            ).get();
     setState(() {
       likedListingsData = likedListingsSnapshot.docs;
     });
@@ -71,11 +76,27 @@ class _LikesPageState extends State<LikesPage> {
       body: ListView.builder(
         itemCount: likedListingsData.length,
         itemBuilder: (context, index) {
+          final data =
+              likedListingsData[index].data() as Map<String, dynamic>?;
+
           final listingId = likedListingsData[index].id;
+
+          final imageUrl = data != null && data.containsKey('imageUrl')
+              ? data['imageUrl'] as String
+              : null;
+
+          final projectTitle = data != null && data.containsKey('projectTitle')
+              ? data['projectTitle'] as String // Cast projectTitle to String
+              : 'Project Title';
+
+          final projectSubtitle =
+              data != null && data.containsKey('projectSubtitle')
+                  ? data['projectSubtitle'] as String // Cast projectSubtitle to String
+                  : 'Project Subtitle';
+
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
-              height: 200.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
                 color: Colors.white,
@@ -88,23 +109,46 @@ class _LikesPageState extends State<LikesPage> {
                   ),
                 ],
               ),
-              child: ListTile(
-                title: Text(
-                  likedListingsData[index]['projectTitle'],
-                  style: GoogleFonts.bebasNeue(fontSize: 50),
-                ),
-                subtitle: Text(
-                  likedListingsData[index]['projectSubtitle'],
-                  style: GoogleFonts.bebasNeue(fontSize: 30),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewListing(listingId: listingId),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image
+                  imageUrl != null
+                      ? Container(
+                          width: 150,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageUrl != null
+                                  ? NetworkImage(imageUrl)
+                                  : AssetImage('assets/placeholder_image.png') as ImageProvider,
+                              fit: BoxFit.contain, // Use BoxFit.contain to fit the entire image
+                            ),
+                          ),
+                        )
+                      : SizedBox(width: 150),
+                  SizedBox(width: 10), // Add some spacing between image and text
+                  Expanded(
+                    // Wrap the content with Expanded to fill the available space
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Project Title
+                        Text(
+                          projectTitle,
+                          style: GoogleFonts.bebasNeue(fontSize: 35),
+                        ),
+                        // Add some spacing between title and subtitle
+                        SizedBox(height: 5),
+                        // Project Subtitle
+                        Text(
+                          projectSubtitle,
+                          style: GoogleFonts.bebasNeue(fontSize: 20, textStyle: TextStyle(color: Colors.blueGrey)),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
           );

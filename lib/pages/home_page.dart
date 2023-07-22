@@ -118,12 +118,26 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemCount: listingsData.length,
         itemBuilder: (context, index) {
+          final data = listingsData[index].data() as Map<String, dynamic>?;
+
           final listingId = listingsData[index].id;
           final isLiked = isListingLiked(listingId);
+
+          final imageUrl = data != null && data.containsKey('imageUrl')
+              ? data['imageUrl'] as String
+              : null;
+
+          final projectTitle = data != null && data.containsKey('projectTitle')
+              ? data['projectTitle'] as String // Cast projectTitle to String
+              : 'Project Title';
+
+          final projectSubtitle = data != null && data.containsKey('projectSubtitle')
+              ? data['projectSubtitle'] as String // Cast projectSubtitle to String
+              : 'Project Subtitle';
+
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
-              height: 200.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
                 color: Colors.white,
@@ -136,32 +150,55 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              child: ListTile(
-                title: Text(
-                  listingsData[index]['projectTitle'],
-                  style: GoogleFonts.bebasNeue(fontSize: 50),
-                ),
-                subtitle: Text(
-                  listingsData[index]['projectSubtitle'],
-                  style: GoogleFonts.bebasNeue(fontSize: 30),
-                ),
-                trailing: IconButton(
-                  icon: Icon(
-                    isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: isLiked ? Colors.red : Colors.grey,
-                  ),
-                  onPressed: () {
-                    toggleLikeStatus(listingId);
-                  },
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewListing(listingId: listingId),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image
+                  imageUrl != null
+                      ? Container(
+                          width: 150,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageUrl != null
+                                  ? NetworkImage(imageUrl)
+                                  : AssetImage('assets/placeholder_image.png') as ImageProvider,
+                              fit: BoxFit.contain, // Use BoxFit.contain to fit the entire image
+                            ),
+                          ),
+                        )
+                      : SizedBox(width: 150),
+                  SizedBox(width: 20), // Add some spacing between image and text
+                  Expanded( // Wrap the content with Expanded to fill the available space
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Project Title
+                        Text(
+                          projectTitle,
+                          style: GoogleFonts.bebasNeue(fontSize: 35),
+                        ),
+                        // Add some spacing between title and subtitle
+                        SizedBox(height: 15),
+                        // Project Subtitle
+                        Text(
+                          projectSubtitle,
+                          style: GoogleFonts.bebasNeue(fontSize: 20, textStyle: TextStyle(color: Colors.blueGrey)),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                  // Like Icon
+                  IconButton(
+                    icon: Icon(
+                      isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: isLiked ? Colors.red : Colors.grey,
+                    ),
+                    onPressed: () {
+                      toggleLikeStatus(listingId);
+                    },
+                  ),
+                ],
               ),
             ),
           );

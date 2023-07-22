@@ -24,12 +24,17 @@ class _LikesPageState extends State<LikesPage> {
 
   Future<void> _fetchLikedListings() async {
     final user = FirebaseAuth.instance.currentUser!;
-    final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
     final userData = await userDoc.get();
-    final likedListingIds = List<String>.from(userData.data()?['likedListings'] ?? []);
+    final likedListingIds =
+        List<String>.from(userData.data()?['likedListings'] ?? []);
 
     // Fetch the liked listings data from the listings collection
-    final likedListingsSnapshot = await FirebaseFirestore.instance.collection('listings').where(FieldPath.documentId, whereIn: likedListingIds).get();
+    final likedListingsSnapshot = await FirebaseFirestore.instance
+        .collection('listings')
+        .where(FieldPath.documentId, whereIn: likedListingIds)
+        .get();
     setState(() {
       likedListingsData = likedListingsSnapshot.docs;
     });

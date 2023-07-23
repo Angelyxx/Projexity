@@ -24,17 +24,20 @@ class _LikesPageState extends State<LikesPage> {
 
   Future<void> _fetchLikedListings() async {
     final user = FirebaseAuth.instance.currentUser!;
-    final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final userDoc =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
     final userData = await userDoc.get();
     final likedListingIds =
         List<String>.from(userData.data()?['likedListings'] ?? []);
 
     // Fetch the liked listings data from the listings collection
-    final likedListingsSnapshot =
-        await FirebaseFirestore.instance.collection('listings').where(
-              FieldPath.documentId,
-              whereIn: likedListingIds,
-            ).get();
+    final likedListingsSnapshot = await FirebaseFirestore.instance
+        .collection('listings')
+        .where(
+          FieldPath.documentId,
+          whereIn: likedListingIds,
+        )
+        .get();
     setState(() {
       likedListingsData = likedListingsSnapshot.docs;
     });
@@ -76,8 +79,7 @@ class _LikesPageState extends State<LikesPage> {
       body: ListView.builder(
         itemCount: likedListingsData.length,
         itemBuilder: (context, index) {
-          final data =
-              likedListingsData[index].data() as Map<String, dynamic>?;
+          final data = likedListingsData[index].data() as Map<String, dynamic>?;
 
           final listingId = likedListingsData[index].id;
 
@@ -91,7 +93,8 @@ class _LikesPageState extends State<LikesPage> {
 
           final projectSubtitle =
               data != null && data.containsKey('projectSubtitle')
-                  ? data['projectSubtitle'] as String // Cast projectSubtitle to String
+                  ? data['projectSubtitle']
+                      as String // Cast projectSubtitle to String
                   : 'Project Subtitle';
 
           return Padding(
@@ -121,13 +124,16 @@ class _LikesPageState extends State<LikesPage> {
                             image: DecorationImage(
                               image: imageUrl != null
                                   ? NetworkImage(imageUrl)
-                                  : AssetImage('assets/placeholder_image.png') as ImageProvider,
-                              fit: BoxFit.contain, // Use BoxFit.contain to fit the entire image
+                                  : AssetImage('assets/placeholder_image.png')
+                                      as ImageProvider,
+                              fit: BoxFit
+                                  .contain, // Use BoxFit.contain to fit the entire image
                             ),
                           ),
                         )
                       : SizedBox(width: 150),
-                  SizedBox(width: 10), // Add some spacing between image and text
+                  SizedBox(
+                      width: 10), // Add some spacing between image and text
                   Expanded(
                     // Wrap the content with Expanded to fill the available space
                     child: Column(
@@ -143,7 +149,9 @@ class _LikesPageState extends State<LikesPage> {
                         // Project Subtitle
                         Text(
                           projectSubtitle,
-                          style: GoogleFonts.bebasNeue(fontSize: 20, textStyle: TextStyle(color: Colors.blueGrey)),
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              textStyle: TextStyle(color: Colors.blueGrey)),
                         ),
                       ],
                     ),

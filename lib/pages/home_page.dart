@@ -113,8 +113,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-
-      ///List view to scroll downwards
       body: ListView.builder(
         itemCount: listingsData.length,
         itemBuilder: (context, index) {
@@ -135,70 +133,77 @@ class _HomePageState extends State<HomePage> {
               ? data['projectSubtitle'] as String // Cast projectSubtitle to String
               : 'Project Subtitle';
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewListing(
+                    listingId: listingId,
                   ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Image
-                  imageUrl != null
-                      ? Container(
-                          width: 150,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageUrl != null
-                                  ? NetworkImage(imageUrl)
-                                  : AssetImage('assets/placeholder_image.png') as ImageProvider,
-                              fit: BoxFit.contain, // Use BoxFit.contain to fit the entire image
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    imageUrl != null
+                        ? Container(
+                            width: 150,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageUrl != null
+                                    ? NetworkImage(imageUrl)
+                                    : AssetImage('assets/placeholder_image.png') as ImageProvider,
+                                fit: BoxFit.contain,
+                              ),
                             ),
+                          )
+                        : SizedBox(width: 150),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            projectTitle,
+                            style: GoogleFonts.bebasNeue(fontSize: 35),
                           ),
-                        )
-                      : SizedBox(width: 150),
-                  SizedBox(width: 20), // Add some spacing between image and text
-                  Expanded( // Wrap the content with Expanded to fill the available space
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Project Title
-                        Text(
-                          projectTitle,
-                          style: GoogleFonts.bebasNeue(fontSize: 35),
-                        ),
-                        // Add some spacing between title and subtitle
-                        SizedBox(height: 15),
-                        // Project Subtitle
-                        Text(
-                          projectSubtitle,
-                          style: GoogleFonts.bebasNeue(fontSize: 20, textStyle: TextStyle(color: Colors.blueGrey)),
-                        ),
-                      ],
+                          SizedBox(height: 15),
+                          Text(
+                            projectSubtitle,
+                            style: GoogleFonts.bebasNeue(fontSize: 20, textStyle: TextStyle(color: Colors.blueGrey)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  // Like Icon
-                  IconButton(
-                    icon: Icon(
-                      isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? Colors.red : Colors.grey,
+                    IconButton(
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? Colors.red : Colors.grey,
+                      ),
+                      onPressed: () {
+                        toggleLikeStatus(listingId);
+                      },
                     ),
-                    onPressed: () {
-                      toggleLikeStatus(listingId);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

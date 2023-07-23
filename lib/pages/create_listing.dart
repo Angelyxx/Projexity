@@ -34,6 +34,7 @@ class _ListingState extends State<Listing> {
     super.dispose();
   }
 
+
   Future<void> _selectImage() async {
     try {
       final pickedFile =

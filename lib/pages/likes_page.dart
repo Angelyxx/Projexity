@@ -97,66 +97,77 @@ class _LikesPageState extends State<LikesPage> {
                       as String // Cast projectSubtitle to String
                   : 'Project Subtitle';
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewListing(
+                    listingId: listingId,
                   ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Image
-                  imageUrl != null
-                      ? Container(
-                          width: 150,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageUrl != null
-                                  ? NetworkImage(imageUrl)
-                                  : AssetImage('assets/placeholder_image.png')
-                                      as ImageProvider,
-                              fit: BoxFit
-                                  .contain, // Use BoxFit.contain to fit the entire image
-                            ),
-                          ),
-                        )
-                      : SizedBox(width: 150),
-                  SizedBox(
-                      width: 10), // Add some spacing between image and text
-                  Expanded(
-                    // Wrap the content with Expanded to fill the available space
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Project Title
-                        Text(
-                          projectTitle,
-                          style: GoogleFonts.bebasNeue(fontSize: 35),
-                        ),
-                        // Add some spacing between title and subtitle
-                        SizedBox(height: 5),
-                        // Project Subtitle
-                        Text(
-                          projectSubtitle,
-                          style: GoogleFonts.bebasNeue(
-                              fontSize: 20,
-                              textStyle: TextStyle(color: Colors.blueGrey)),
-                        ),
-                      ],
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Image
+                    imageUrl != null
+                        ? Container(
+                            width: 150,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageUrl != null
+                                    ? NetworkImage(imageUrl)
+                                    : AssetImage('assets/placeholder_image.png')
+                                        as ImageProvider,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )
+                        : SizedBox(width: 150),
+                    SizedBox(
+                        width: 10), // Add some spacing between image and text
+                    Expanded(
+                      // Wrap the content with Expanded to fill the available space
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Project Title
+                          Text(
+                            projectTitle,
+                            style: GoogleFonts.bebasNeue(fontSize: 35),
+                          ),
+                          // Add some spacing between title and subtitle
+                          SizedBox(height: 5),
+                          // Project Subtitle
+                          Text(
+                            projectSubtitle,
+                            style: GoogleFonts.bebasNeue(
+                                fontSize: 20,
+                                textStyle: TextStyle(color: Colors.blueGrey)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
